@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ONDA &middot; Optical Nonlinear Devices and Architectures &middot; KTH</title>
+<link rel="icon" href="assets/onda-logo.svg" type="image/svg+xml">
+<meta name="description" content="ONDA at KTH Applied Physics engineers nonlinear optical materials whose optical and quantum functions can be designed, written, erased and rewritten.">
+<meta property="og:title" content="ONDA at KTH">
+<meta property="og:description" content="ONDA is a research group at KTH Applied Physics dedicated to engineering nonlinear optical materials and expanding what we can do with light. We explore how the optical and quantum functionalities of crystals can be designed, written, erased, and rewritten, creating new opportunities for fundamental discoveries and for photonic technologies in quantum science, communications, sensing, and beyond.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a talk on a page. One idea per section, very large statements set flush left,
+   generous vertical space, one dark "stage" band for the central sentence. No motion. */
+:root{
+  --ground:#F3F5F2;     /* cool paper, faint green bias */
+  --surface:#FFFFFF;
+  --ink:#0F1713;
+  --ink2:#3E4943;
+  --ink3:#6C7871;
+  --rule:#D3DAD5;
+  --green:#14704A;      /* 532 nm: the light KTP is known for */
+  --ir:#9A3328;         /* 1064 nm: the infrared that goes in */
+  --stage:#0F2A1D;
+  --stage-ink:#E8F0EA;
+  --stage-dim:#9DB8A7;
+  --stage-acc:#9BE0B6;
+  --fD:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --fB:"Newsreader",Georgia,"Times New Roman",serif;
+  --fM:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0D1210; --surface:#141B18;
+  --ink:#E5ECE7; --ink2:#A8B5AD; --ink3:#7A887F; --rule:#25312B;
+  --green:#7CCB9C; --ir:#E58A7C;
+  --stage:#132A1F; --stage-ink:#E8F0EA; --stage-dim:#9DB8A7; --stage-acc:#9BE0B6;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ground:#0D1210; --surface:#141B18;
+  --ink:#E5ECE7; --ink2:#A8B5AD; --ink3:#7A887F; --rule:#25312B;
+  --green:#7CCB9C; --ir:#E58A7C;
+  --stage:#132A1F; --stage-ink:#E8F0EA; --stage-dim:#9DB8A7; --stage-acc:#9BE0B6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--fB);font-size:19px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:inherit;text-decoration-color:var(--green);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+
+.band{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.in{max-width:1120px;margin:0 auto}
+section.band{padding-block:clamp(72px,11vw,140px);border-top:1px solid var(--rule)}
+
+.eyebrow{font-family:var(--fM);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);margin:0 0 22px}
+.eyebrow b{color:var(--green);font-weight:500}
+.eyebrow a{text-decoration:none}
+.eyebrow.oneline{white-space:nowrap;max-width:none;letter-spacing:.14em}
+.eyebrow .short{display:none}
+@media(max-width:820px){.eyebrow.oneline .long{display:none}.eyebrow.oneline .short{display:inline}}
+@media(max-width:560px){.mark svg{height:34px}.kth img{height:44px}.dept{font-size:11px}nav{font-size:13px;gap:18px}}
+.eyebrow a:hover{text-decoration:underline}
+h1,h2,h3{font-family:var(--fD);margin:0;text-wrap:balance}
+h1{font-weight:700;font-size:clamp(28px,calc((min(100vw,1160px) - 40px) / 26.5),46px);line-height:1.08;letter-spacing:-.025em;max-width:none}
+h2{font-weight:700;font-size:clamp(34px,5.4vw,68px);line-height:1.02;letter-spacing:-.03em;max-width:17ch}
+h3{font-weight:600;font-size:22px;line-height:1.2;letter-spacing:-.01em}
+h1 em,h2 em{font-style:normal;color:var(--green)}
+p{margin:0;max-width:62ch}
+.lede{font-size:clamp(20px,2.1vw,24px);line-height:1.5;color:var(--ink2);max-width:52ch}
+.body{color:var(--ink2)}
+.stack{display:flex;flex-direction:column;gap:28px}
+
+/* header */
+header.band{padding-block:22px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px 28px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dept{font-family:var(--fM);font-size:14px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;text-decoration:none}
+.dept:hover{color:var(--ink);text-decoration:underline}
+.top nav{margin-left:auto}
+.kth{display:block;line-height:0;background:#fff;border-radius:4px;padding:3px}
+.kth img{height:56px;width:auto}
+.foot .kth img{height:52px}
+.foot-left{display:flex;align-items:center;gap:18px}
+@media(max-width:760px){.brand{flex:1}.kth{order:2}.top nav{order:3;width:100%;margin-left:0}}
+.mark{display:flex;align-items:center;gap:4px;text-decoration:none}
+.mark svg{height:46px;width:auto;display:block}
+nav{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--fM);font-size:14.5px;letter-spacing:.1em;text-transform:uppercase}
+nav a{text-decoration:none;color:var(--ink2)}
+nav a:hover{color:var(--ink);text-decoration:underline}
+
+/* hero */
+.hero{padding-block:clamp(56px,9vw,120px) clamp(64px,9vw,120px)}
+.hero .stack{gap:36px}
+.acro{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--fD);font-weight:600;font-size:clamp(18px,2vw,22px);color:var(--ink2);margin-bottom:-14px}
+.acro b{font-weight:700;font-size:1.25em}
+.acro span:nth-child(1) b{color:#ce7131}.acro span:nth-child(2) b{color:#9a7b65}.acro span:nth-child(3) b{color:#65849a}.acro span:nth-child(4) b{color:#318ece}
+.beam{margin-top:12px;border-top:1px solid var(--rule);padding-top:28px}
+.beam svg{display:block;width:100%;height:auto}
+.beam-wrap{overflow-x:auto}
+.beam-wrap svg{min-width:560px}
+.f-ir{fill:var(--ir)}.f-gr{fill:var(--green)}.f-mu{fill:var(--ink3)}.f-ink{fill:var(--ink)}
+.s-ir{stroke:var(--ir)}.s-gr{stroke:var(--green)}
+.xtal{fill:var(--surface);stroke:var(--ink)}
+.cap{font-family:var(--fM);font-size:12px;line-height:1.6;color:var(--ink3);margin-top:12px;max-width:none}
+.hero-text{gap:20px}
+.pull{font-family:var(--fD);font-weight:600;font-size:clamp(24px,2.8vw,34px);line-height:1.2;letter-spacing:-.015em;color:var(--green);max-width:30ch}
+.pull.imagine{margin-top:28px}
+
+/* four knobs */
+.cols4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px 32px;margin-top:64px}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 36px;margin-top:64px}
+.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 48px;margin-top:64px}
+.item{border-top:2px solid var(--ink);padding-top:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.item p{font-size:17.5px;line-height:1.55;color:var(--ink2)}
+.item .k{font-family:var(--fM);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+@media(max-width:900px){.cols4{grid-template-columns:repeat(2,minmax(0,1fr))}.cols3{grid-template-columns:1fr}}
+@media(max-width:560px){.cols4,.cols2{grid-template-columns:1fr}}
+
+/* stage */
+.stage{background:var(--stage);color:var(--stage-ink);border-top:0}
+.stage .eyebrow{color:var(--stage-dim)}
+.stage blockquote{margin:0;font-family:var(--fD);font-weight:600;font-size:clamp(30px,4.6vw,58px);line-height:1.1;letter-spacing:-.025em;max-width:24ch;text-wrap:balance}
+.stage blockquote em{font-style:normal;color:var(--stage-acc)}
+.stage .attr{font-family:var(--fM);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--stage-dim);margin-top:36px}
+
+
+/* questions */
+.q{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px 40px;padding-block:48px;border-top:1px solid var(--rule)}
+.q:first-of-type{margin-top:64px}
+.q .num{font-family:var(--fD);font-weight:700;font-size:56px;line-height:1;color:var(--green);letter-spacing:-.02em}
+.q h3{font-family:var(--fM);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px}
+.q .ask{font-family:var(--fD);font-weight:600;font-size:clamp(24px,3vw,36px);line-height:1.15;letter-spacing:-.02em;max-width:26ch;margin-bottom:18px}
+.q.base{border-top:2px solid var(--ink)}
+.q.base .num{font-size:15px;font-family:var(--fM);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);padding-top:10px}
+@media(max-width:640px){.q{grid-template-columns:1fr;gap:12px}.q .num{font-size:44px}}
+
+/* research highlights */
+.hls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px 36px;margin-top:64px}
+@media(max-width:980px){.hls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.hls{grid-template-columns:1fr}}
+.hl{display:flex;flex-direction:column;gap:10px;min-width:0}
+.hl-fig{margin:0 0 8px}
+.hl-img{aspect-ratio:4/3;background:#fff;border:1px solid var(--rule);border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:10px}
+.hl-img img,.hl-img svg{max-width:100%;max-height:100%;width:auto;height:auto;display:block}
+.hl-img svg{width:100%}
+.hl-img .xtal{fill:#fff;stroke:#0F1713}
+.hl-img .f-mu{fill:#6C7871}.hl-img .f-gr{fill:#14704A}.hl-img .s-gr{stroke:#14704A}.hl-img .f-ir{fill:#9A3328}.hl-img .s-ir{stroke:#9A3328}.hl-img .f-ink{fill:#0F1713}
+.hl-fig figcaption{font-family:var(--fM);font-size:11px;line-height:1.5;color:var(--ink3);margin-top:8px}
+.hl .k{font-family:var(--fM);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.hl h3{font-size:24px}
+.hl p{font-size:17.5px;line-height:1.55;color:var(--ink2)}
+.papers{list-style:none;margin:6px 0 0;padding:12px 0 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:6px;font-family:var(--fM);font-size:12.5px;line-height:1.45}
+.papers a{color:var(--ink2)}
+.papers a:hover{color:var(--ink)}
+.all-pubs{margin-top:56px;font-family:var(--fD);font-weight:600;font-size:22px}
+
+/* meet ONDA */
+.tiers{margin-top:72px;display:flex;flex-direction:column}
+.tier{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:20px 48px;padding-block:36px;border-top:2px solid var(--ink)}
+.tier-head{display:flex;flex-direction:column;gap:6px}
+.tier-head .k{font-family:var(--fM);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.tier-head p{font-size:16px;color:var(--ink3)}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 40px}
+.person{display:flex;flex-direction:column;gap:6px;min-width:0}
+.person h3{font-size:24px}
+.person p{font-size:17px;line-height:1.5;color:var(--ink2)}
+.person .role{font-family:var(--fM);font-size:12.5px;letter-spacing:.02em;color:var(--ink3)}
+.person a{color:inherit}
+.person .more{font-family:var(--fM);font-size:12.5px;margin-top:4px}
+@media(max-width:760px){.tier{grid-template-columns:1fr}.people{grid-template-columns:1fr}}
+
+/* join: student project ads */
+.join-block{margin-top:64px;border-top:2px solid var(--green);padding-top:28px}
+.join-head{display:flex;flex-direction:column;gap:10px;max-width:62ch}
+.join-head h3,.join-more h3{font-size:30px}
+.join-head p{color:var(--ink2)}
+.status{align-self:flex-start;font-family:var(--fM);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--rule);color:var(--ink3)}
+.status.open{background:var(--green);border-color:var(--green);color:var(--ground)}
+.ads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:36px}
+@media(max-width:980px){.ads{grid-template-columns:1fr}}
+.ad{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ad .k{font-family:var(--fM);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.ad h3{font-size:22px;line-height:1.2}
+.ad-sub{font-family:var(--fM);font-size:12.5px;color:var(--ink3)}
+.ad p,.ad li{font-size:16.5px;line-height:1.55;color:var(--ink2)}
+.ad details{margin-top:auto;border-top:1px solid var(--rule);padding-top:12px}
+.ad summary{cursor:pointer;font-family:var(--fM);font-size:12.5px;color:var(--ink);text-decoration:underline;text-decoration-color:var(--green);text-underline-offset:3px}
+.ad-body{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.ad-body h4{font-family:var(--fD);font-size:17px;margin:6px 0 0}
+.ad-body ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px}
+.ad-meta{font-family:var(--fM);font-size:12px !important;color:var(--ink3) !important}
+.join-more{margin-top:64px}
+.join-more .item{border-top-color:var(--green)}
+.join-more .status{margin-bottom:4px}
+
+/* closing question */
+.final h2{max-width:20ch;font-size:clamp(34px,5.6vw,74px)}
+
+/* how we work */
+
+/* join */
+.join .item{border-top-color:var(--green)}
+.join .item h3{font-size:26px}
+.contact{margin-top:72px;padding:36px clamp(20px,4vw,48px);background:var(--surface);border:1px solid var(--rule);border-radius:6px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:center}
+.contact p{color:var(--ink2)}
+.contact .addr{font-family:var(--fM);font-size:15px;line-height:1.8;color:var(--ink)}
+.contact .addr a{text-decoration:underline}
+@media(max-width:760px){.contact{grid-template-columns:1fr}}
+
+footer.band{padding-block:40px 56px;border-top:1px solid var(--rule)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;font-family:var(--fM);font-size:12px;letter-spacing:.06em;color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="in top">
+    <div class="brand">
+      <a class="mark" href="#top" id="top" aria-label="ONDA home"><svg viewBox="0 0 81.56 20.26" role="img" aria-label="ONDA">
+      <defs>
+        <linearGradient id="hdO" gradientUnits="userSpaceOnUse" x1="102.65" y1="67.33" x2="84.82" y2="67.33"><stop offset="0" stop-color="#ce7131"/><stop offset="1" stop-color="#ce7131" stop-opacity=".23"/></linearGradient>
+        <linearGradient id="hdA" gradientUnits="userSpaceOnUse" x1="84.82" y1="67.33" x2="102.65" y2="67.33"><stop offset="0" stop-color="#318ece"/><stop offset="1" stop-color="#318ece" stop-opacity=".23"/></linearGradient>
+        <linearGradient id="hdN" gradientUnits="userSpaceOnUse" x1="81.76" y1="81.82" x2="137.07" y2="81.70"><stop offset="0" stop-color="#ce7131"/><stop offset="1" stop-color="#318ece"/></linearGradient>
+        <mask id="hdM" maskUnits="userSpaceOnUse" x="26.65" y="22.88" width="83.26" height="22.04">
+          <rect x="26.65" y="22.88" width="83.26" height="22.04" fill="#fff"/>
+          <g fill="#000"><rect x="47.6520" y="23.231" width="0.5702" height="21.31"/><rect x="48.7924" y="23.231" width="0.5702" height="21.31"/><rect x="49.9329" y="23.231" width="0.5702" height="21.31"/><rect x="51.0733" y="23.231" width="0.5702" height="21.31"/><rect x="52.2138" y="23.231" width="0.5702" height="21.31"/><rect x="53.3542" y="23.231" width="0.5702" height="21.31"/><rect x="54.4947" y="23.231" width="0.5702" height="21.31"/><rect x="55.6351" y="23.231" width="0.5702" height="21.31"/><rect x="56.7756" y="23.231" width="0.5702" height="21.31"/><rect x="57.9160" y="23.231" width="0.5702" height="21.31"/><rect x="59.0565" y="23.231" width="0.5702" height="21.31"/><rect x="60.1969" y="23.231" width="0.5702" height="21.31"/><rect x="61.3374" y="23.231" width="0.5702" height="21.31"/><rect x="62.4778" y="23.231" width="0.5702" height="21.31"/><rect x="63.6182" y="23.231" width="0.5702" height="21.31"/><rect x="64.7587" y="23.231" width="0.5702" height="21.31"/><rect x="65.8991" y="23.231" width="0.5702" height="21.31"/><rect x="67.0396" y="23.231" width="0.5702" height="21.31"/><rect x="68.1800" y="23.231" width="0.5702" height="21.31"/><rect x="69.3205" y="23.231" width="0.5702" height="21.31"/><rect x="70.4609" y="23.231" width="0.5702" height="21.31"/><rect x="71.6014" y="23.231" width="0.5702" height="21.31"/><rect x="72.7418" y="23.231" width="0.5702" height="21.31"/><rect x="73.8823" y="23.231" width="0.5702" height="21.31"/><rect x="75.0227" y="23.231" width="0.5702" height="21.31"/><rect x="76.1632" y="23.231" width="0.5702" height="21.31"/><rect x="77.3036" y="23.231" width="0.5702" height="21.31"/><rect x="78.4440" y="23.231" width="0.5702" height="21.31"/><rect x="79.5845" y="23.231" width="0.5702" height="21.31"/><rect x="80.7249" y="23.231" width="0.5702" height="21.31"/><rect x="81.8654" y="23.231" width="0.5702" height="21.31"/><rect x="83.0058" y="23.231" width="0.5702" height="21.31"/><rect x="84.1463" y="23.231" width="0.5702" height="21.31"/><rect x="85.2867" y="23.231" width="0.5702" height="21.31"/></g>
+        </mask>
+      </defs>
+      <g transform="translate(-27.366,-23.786)"><g mask="url(#hdM)">
+        <path fill="url(#hdA)" transform="matrix(1,0,0,0.55945556,2.9318328,-3.6678743)" d="m105.998 85.118h-7.739l-1.315-9.55h-3.497l-1.315 9.55h-7.739l5.854-35.57h9.897zM96.3 70.632 95.184 60.016 94.117 70.632Z"/>
+        <path fill="url(#hdN)" transform="matrix(1,0,0,0.55945556,-37.788387,-3.593003)" d="M104.758 85.118H96.721L91.413 66.167V85.118H84.89V49.548h8.88l4.465 16.222V49.548h6.524zm1.612 0V49.548h9.723q3.175 0 5.656 1.736 2.48 1.712 2.48 5.284v21.53q0 3.324-2.331 5.184-2.307 1.836-5.755 1.836zm9.996-6.449V55.997q0-1.860-2.183-1.860V80.554q2.183 0 2.183-1.885z"/>
+        <path fill="url(#hdO)" transform="matrix(1,0,0,0.55945556,-57.44932,-3.7538483)" d="M84.815 79.041V56.146q0-6.92 8.979-6.92 8.855 0 8.855 6.871v22.895q0 3.1-2.48 4.787-2.456 1.662-6.425 1.662-8.93 0-8.93-6.4zm10.195.372V55.179q0-1.067-1.265-1.067-1.315 0-1.315 1.067v24.234q0 1.067 1.315 1.067 1.265 0 1.265-1.067z"/>
+      </g></g>
+    </svg></a>
+      <a class="dept" href="https://www.aphys.kth.se">KTH Applied Physics</a>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#idea">The idea</a>
+      <a href="#research">Our research</a>
+      <a href="#highlights">Highlights</a>
+      <a href="#team">Team</a>
+      <a href="#join">Join us</a>
+    </nav>
+    <a class="kth" href="https://www.kth.se" aria-label="KTH Royal Institute of Technology"><img src="assets/kth-logo.png" width="214" height="240" alt="KTH Royal Institute of Technology"></a>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="band hero">
+  <div class="in stack">
+    <div class="acro" aria-label="ONDA: Optical Nonlinear Devices and Architectures">
+      <span><b>O</b>ptical</span><span><b>N</b>onlinear</span><span><b>D</b>evices and</span><span><b>A</b>rchitectures</span>
+    </div>
+    <p class="eyebrow oneline"><a href="https://www.aphys.kth.se"><span class="long">Department of </span>Applied Physics</a> &middot; <a href="https://www.kth.se">KTH<span class="long"> Royal Institute of Technology</span></a><span class="long">,</span><span class="short"> &middot;</span> Stockholm</p>
+    <h1>What if we could <em>program</em> how materials transform light?</h1>
+    <div class="stack hero-text">
+      <p class="lede">Nonlinear optical materials can change the colour of light, generate entangled photons, and control how light interacts with light.</p>
+      <p class="lede">These capabilities depend on how the material is engineered. Traditionally, much of that engineering is fixed during fabrication.</p>
+      <p class="pull">What if we could change it whenever we wanted?</p>
+      <p class="lede">At ONDA, we explore how to engineer nonlinear materials whose optical functions can be written, erased, and rewritten, allowing us to control and reconfigure the way light is transformed.</p>
+    </div>
+    <figure class="beam" style="margin-inline:0">
+      <p class="eyebrow">A simple example of a powerful idea</p>
+      <div class="beam-wrap">
+      <svg viewBox="0 0 1000 300" role="img" aria-label="Illustration: an infrared beam at 1064 nanometres enters a KTP crystal with alternating ferroelectric domains, and a green beam at 532 nanometres emerges.">
+        <defs>
+          <marker id="hArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F1713"/></marker>
+          <linearGradient id="hIn" x1="0" x2="1"><stop offset="0" stop-color="#9A3328" stop-opacity="0"/><stop offset=".35" stop-color="#9A3328"/><stop offset="1" stop-color="#C2412F"/></linearGradient>
+          <linearGradient id="hIns" x1="0" x2="1"><stop offset="0" stop-color="#C2412F" stop-opacity=".55"/><stop offset="1" stop-color="#1F9A63" stop-opacity=".55"/></linearGradient>
+          <linearGradient id="hOut" x1="0" x2="1"><stop offset="0" stop-color="#1F9A63"/><stop offset=".7" stop-color="#2BC07A"/><stop offset="1" stop-color="#2BC07A" stop-opacity="0"/></linearGradient>
+          <filter id="hGlow" x="-10%" y="-200%" width="120%" height="500%"><feGaussianBlur stdDeviation="5"/></filter>
+        </defs>
+        <g font-family="JetBrains Mono, monospace" font-size="14" letter-spacing="1">
+          <text x="40" y="150" class="f-ir">1064 nm &#183; infrared</text>
+          <text x="960" y="150" text-anchor="end" class="f-gr">532 nm &#183; green</text>
+          <text x="545" y="292" text-anchor="middle" class="f-mu">KTiOPO&#8324; (KTP) &#183; Engineered ferroelectric domains</text>
+        </g>
+        <rect x="0" y="169.0" width="365.0" height="14" fill="#C2412F" opacity=".3" filter="url(#hGlow)"/>
+        <rect x="0" y="174.0" width="365.0" height="4" fill="url(#hIn)"/>
+        <polygon points="330,160 400,102 400,192 330,250" fill="#BCCDC2" opacity=".55"/>
+        <rect x="330.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="330.0,160 360.0,160 430.0,102 400.0,102" fill="#F4F7F4"/><line x1="345.0" y1="232" x2="345.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="360.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="360.0,160 390.0,160 460.0,102 430.0,102" fill="#DCE6DF"/><line x1="375.0" y1="178" x2="375.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="390.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="390.0,160 420.0,160 490.0,102 460.0,102" fill="#F4F7F4"/><line x1="405.0" y1="232" x2="405.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="420.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="420.0,160 450.0,160 520.0,102 490.0,102" fill="#DCE6DF"/><line x1="435.0" y1="178" x2="435.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="450.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="450.0,160 480.0,160 550.0,102 520.0,102" fill="#F4F7F4"/><line x1="465.0" y1="232" x2="465.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="480.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="480.0,160 510.0,160 580.0,102 550.0,102" fill="#DCE6DF"/><line x1="495.0" y1="178" x2="495.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="510.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="510.0,160 540.0,160 610.0,102 580.0,102" fill="#F4F7F4"/><line x1="525.0" y1="232" x2="525.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="540.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="540.0,160 570.0,160 640.0,102 610.0,102" fill="#DCE6DF"/><line x1="555.0" y1="178" x2="555.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="570.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="570.0,160 600.0,160 670.0,102 640.0,102" fill="#F4F7F4"/><line x1="585.0" y1="232" x2="585.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="600.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="600.0,160 630.0,160 700.0,102 670.0,102" fill="#DCE6DF"/><line x1="615.0" y1="178" x2="615.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="630.0" y="160" width="30.0" height="90" fill="#E9EEEA"/><polygon points="630.0,160 660.0,160 730.0,102 700.0,102" fill="#F4F7F4"/><line x1="645.0" y1="232" x2="645.0" y2="178" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/><rect x="660.0" y="160" width="30.0" height="90" fill="#C9D8CE"/><polygon points="660.0,160 690.0,160 760.0,102 730.0,102" fill="#DCE6DF"/><line x1="675.0" y1="178" x2="675.0" y2="232" stroke="#0F1713" stroke-width="1.6" marker-end="url(#hArrow)" opacity=".55"/>
+        <polygon points="690,160 760,102 760,192 690,250" fill="#AFC3B6"/>
+        <rect x="365.0" y="174.5" width="360.0" height="3" fill="url(#hIns)"/>
+        <polygon points="330,160 400,102 760,102 760,192 690,250 330,250" fill="none" stroke="#0F1713" stroke-width="1.6" stroke-linejoin="round"/><polyline points="330,250 330,160 690,160 690,250" fill="none" stroke="#0F1713" stroke-width="1.2" opacity=".6"/><line x1="690" y1="160" x2="760" y2="102" stroke="#0F1713" stroke-width="1.2" opacity=".6"/>
+        <rect x="725.0" y="168.0" width="275.0" height="16" fill="#2BC07A" opacity=".35" filter="url(#hGlow)"/>
+        <rect x="725.0" y="173.5" width="275.0" height="5" fill="url(#hOut)"/>
+        <rect x="725.0" y="184.0" width="255.0" height="1.5" fill="#C2412F" opacity=".3"/>
+      </svg>
+      </div>
+      <figcaption class="cap">Infrared light enters a nonlinear material. Green light emerges. Inside KTP, microscopic regions of opposite polarisation are arranged in a precise pattern. This pattern controls how light interacts with the material, enabling efficient conversion from one colour to another.</figcaption>
+      <p class="pull imagine">Now imagine being able to change that pattern, and with it what the material can do.</p>
+    </figure>
+  </div>
+</div>
+
+<!-- The idea -->
+<section class="band" id="idea">
+  <div class="in">
+    <p class="eyebrow">The idea</p>
+    <h2>One material. Three things we can <em>shape</em>.</h2>
+    <div class="cols3">
+      <div class="item"><span class="k">Composition</span><h3>What it is made of</h3><p>Swap atoms in and out of the lattice, and the crystal's optical and electrical behaviour changes with them.</p></div>
+      <div class="item"><span class="k">Domains</span><h3>Which way it points</h3><p>Pattern the crystal's internal polarisation finer than a wavelength of light, and new interactions become possible.</p></div>
+      <div class="item"><span class="k">Geometry</span><h3>Where it ends</h3><p>Make the crystal thin and narrow enough to hold light tightly, and weak effects become strong.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stage -->
+<section class="band stage">
+  <div class="in">
+    <p class="eyebrow">Our vision</p>
+    <blockquote>We envision a future where the way materials interact with light is no longer fixed at fabrication, but can be <em>designed, programmed, and reconfigured</em>.</blockquote>
+  </div>
+</section>
+
+<!-- Our research -->
+<section class="band" id="research">
+  <div class="in">
+    <p class="eyebrow">Our research</p>
+    <h2>Engineering new <em>possibilities</em> for light</h2>
+    <p class="lede" style="margin-top:28px">The way light interacts with matter depends on much more than the material itself. By controlling composition, structure, geometry, and ferroelectric domains, we can access optical phenomena that conventional approaches cannot easily reach. At ONDA, we push these boundaries in three interconnected directions.</p>
+
+    <div class="q">
+      <div class="num">I</div>
+      <div>
+        <h3>Engineering matter</h3>
+        <p class="ask">Engineering nonlinear materials</p>
+        <p class="body">We investigate how composition, ion transport, and ferroelectric domains determine the properties of nonlinear materials, and how we can engineer them to create new optical functionalities.</p>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="num">II</div>
+      <div>
+        <h3>Exploring new light&ndash;matter interactions</h3>
+        <p class="ask">Pushing the boundaries of nonlinear optics</p>
+        <p class="body">We explore light&ndash;matter interactions in structures engineered at the micro- and nanoscale, enabling unconventional processes such as backward-wave frequency conversion and mirrorless optical oscillation.</p>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="num">III</div>
+      <div>
+        <h3>Making optical functions reconfigurable</h3>
+        <p class="ask">Reconfigurable quantum photonics</p>
+        <p class="body">We investigate how engineered nonlinear interactions can enable new ways of generating and manipulating quantum light, with the long-term goal of making optical and quantum functionalities programmable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Research highlights -->
+<section class="band" id="highlights">
+  <div class="in">
+    <p class="eyebrow">Research highlights</p>
+    <h2>What we have <em>shown</em> so far</h2>
+    <p class="lede" style="margin-top:28px">A few of the results our research builds on, each supported by one or more papers.</p>
+    <div class="hls">
+      <article class="hl">
+        <figure class="hl-fig">
+          <div class="hl-img"><img src="assets/hl-onoff.webp" width="762" height="300" alt="Diagram of voltage pulses switching a periodically poled crystal between off and on states over two cycles." loading="lazy"></div>
+          <figcaption>Barrett et al., APL Photonics 2026, Fig. 2(a) &middot; CC BY 4.0</figcaption>
+        </figure>
+        <span class="k">Reconfigurable nonlinear optics</span>
+        <h3>A crystal that can change its mind</h3>
+        <p>We showed that a nonlinear grating inside a crystal can be switched on, erased and rewritten, and that it keeps its state without power.</p>
+        <ul class="papers" aria-label="Key papers">
+          <li><a href="https://doi.org/10.1063/5.0326401">Barrett et al., APL Photonics 11, 066119 (2026)</a></li><li><a href="https://doi.org/10.1364/OME.491950">Lee et al., Opt. Mater. Express 13, 2203 (2023)</a></li>
+        </ul>
+      </article>
+      <article class="hl">
+        <figure class="hl-fig">
+          <div class="hl-img"><img src="assets/hl-grating.webp" width="553" height="439" alt="Atomic force microscopy image of a straight, regular sub-micrometre domain grating." loading="lazy"></div>
+          <figcaption>Mutter et al., Opt. Mater. Express 2022, Fig. 1(b) &middot; CC BY 4.0</figcaption>
+        </figure>
+        <span class="k">Engineering matter</span>
+        <h3>Drawing with ions</h3>
+        <p>Ion exchange lets us write ferroelectric domain gratings with periods below 500 nm, which stay straight through a millimetre of crystal.</p>
+        <ul class="papers" aria-label="Key papers">
+          <li><a href="https://doi.org/10.1364/OE.24.014682">Liljestrand et al., Opt. Express 24, 14682 (2016)</a></li><li><a href="https://doi.org/10.1364/OME.467806">Mutter et al., Opt. Mater. Express 12, 4332 (2022)</a></li><li><a href="https://doi.org/10.1364/OME.491950">Lee et al., Opt. Mater. Express 13, 2203 (2023)</a></li>
+        </ul>
+      </article>
+      <article class="hl">
+        <figure class="hl-fig">
+          <div class="hl-img"><img src="assets/hl-backward.webp" width="1137" height="280" alt="Three-dimensional drawing of a periodically poled crystal: the pump enters from the left and continues forward with two signal beams, while two idler beams leave backwards to the left." loading="lazy"></div>
+          <figcaption>Zukauskas et al., Sci. Rep. 2017, Fig. 1 &middot; CC BY 4.0</figcaption>
+        </figure>
+        <span class="k">Novel nonlinear optics</span>
+        <h3>When light is generated backwards</h3>
+        <p>In sub-micrometre gratings, light can be generated travelling against the pump, giving an optical oscillator that needs no mirrors.</p>
+        <ul class="papers" aria-label="Key papers">
+          <li><a href="https://doi.org/10.1038/nphoton.2007.137">Canalias &amp; Pasiskevicius, Nature Photonics 1, 459 (2007)</a></li><li><a href="https://doi.org/10.1364/OL.42.002435">Liljestrand et al., Opt. Lett. 42, 2435 (2017)</a></li><li><a href="https://doi.org/10.1038/s41598-017-07016-y">Zukauskas et al., Sci. Rep. 7, 8037 (2017)</a></li><li><a href="https://doi.org/10.1063/5.0135589">Mutter et al., APL Photonics 8, 026104 (2023)</a></li><li><a href="https://doi.org/10.1364/OL.481694">Mutter et al., Opt. Lett. 48, 1534 (2023)</a></li>
+        </ul>
+      </article>
+      <article class="hl">
+        <figure class="hl-fig">
+          <div class="hl-img"><svg viewBox="0 0 400 252" role="img" aria-label="Illustration: a pump photon at 800 nanometres enters a periodically poled crystal and splits into a photon pair at 1400 and 1868 nanometres; one photon travels forward and the other travels backward.">
+          <defs><filter id="pGlow" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+          <path d="M8.0,118.0 L8.7,117.8 L9.4,117.6 L10.1,117.5 L10.8,117.5 L11.5,117.6 L12.2,117.9 L12.9,118.2 L13.6,118.5 L14.3,118.7 L15.0,118.8 L15.7,118.7 L16.4,118.4 L17.1,117.9 L17.8,117.4 L18.5,117.0 L19.2,116.8 L19.9,116.8 L20.6,117.2 L21.3,117.8 L22.0,118.5 L22.7,119.2 L23.4,119.7 L24.1,119.8 L24.8,119.4 L25.5,118.7 L26.2,117.7 L26.9,116.7 L27.6,115.8 L28.3,115.5 L29.0,115.7 L29.7,116.5 L30.4,117.8 L31.1,119.2 L31.8,120.5 L32.5,121.3 L33.2,121.3 L33.9,120.5 L34.6,119.0 L35.3,117.2 L36.0,115.4 L36.7,114.0 L37.4,113.6 L38.1,114.2 L38.8,115.8 L39.5,118.0 L40.2,120.4 L40.9,122.4 L41.6,123.4 L42.3,123.2 L43.0,121.7 L43.7,119.2 L44.4,116.3 L45.1,113.6 L45.8,111.8 L46.5,111.5 L47.2,112.6 L47.9,115.2 L48.6,118.5 L49.3,121.8 L50.0,124.4 L50.7,125.5 L51.4,124.9 L52.1,122.6 L52.8,119.1 L53.5,115.2 L54.2,111.9 L54.9,110.0 L55.6,109.9 L56.3,111.7 L57.0,115.1 L57.7,119.2 L58.4,123.1 L59.1,125.9 L59.8,126.8 L60.5,125.7 L61.2,122.7 L61.9,118.6 L62.6,114.3 L63.3,110.9 L64.0,109.1 L64.7,109.4 L65.4,111.8 L66.1,115.5 L66.8,119.9 L67.5,123.7 L68.2,126.2 L68.9,126.7 L69.6,125.2 L70.3,122.1 L71.0,118.0 L71.7,114.0 L72.4,111.0 L73.1,109.8 L73.8,110.4 L74.5,112.8 L75.2,116.3 L75.9,120.2 L76.6,123.3 L77.3,125.2 L78.0,125.3 L78.7,123.7 L79.4,120.9 L80.1,117.5 L80.8,114.4 L81.5,112.3 L82.2,111.5 L82.9,112.3 L83.6,114.4 L84.3,117.2 L85.0,120.0 L85.7,122.2 L86.4,123.3 L87.1,123.1 L87.8,121.8 L88.5,119.7 L89.2,117.3 L89.9,115.3 L90.6,114.0 L91.3,113.7 L92.0,114.4 L92.7,115.9 L93.4,117.7 L94.1,119.5 L94.8,120.8 L95.5,121.3 L96.2,121.0 L96.9,120.1 L97.6,118.8 L98.3,117.4 L99.0,116.3 L99.7,115.7 L100.4,115.6 L101.1,116.1 L101.8,117.0 L102.5,118.0 L103.2,118.9 L103.9,119.5 L104.6,119.7 L105.3,119.5 L106.0,119.0 L106.7,118.3 L107.4,117.6 L108.1,117.1 L108.8,116.8 L109.5,116.9 L110.2,117.2 L110.9,117.6 L111.6,118.1 L112.3,118.5 L113.0,118.7 L113.7,118.8 L114.4,118.6 L115.1,118.4 L115.8,118.1 L116.5,117.8 L117.2,117.6 L117.9,117.5 L118.6,117.6 L119.3,117.7 L120.0,117.9" fill="none" stroke="#ce7131" stroke-width="5" opacity=".3" filter="url(#pGlow)"/>
+          <path d="M8.0,118.0 L8.7,117.8 L9.4,117.6 L10.1,117.5 L10.8,117.5 L11.5,117.6 L12.2,117.9 L12.9,118.2 L13.6,118.5 L14.3,118.7 L15.0,118.8 L15.7,118.7 L16.4,118.4 L17.1,117.9 L17.8,117.4 L18.5,117.0 L19.2,116.8 L19.9,116.8 L20.6,117.2 L21.3,117.8 L22.0,118.5 L22.7,119.2 L23.4,119.7 L24.1,119.8 L24.8,119.4 L25.5,118.7 L26.2,117.7 L26.9,116.7 L27.6,115.8 L28.3,115.5 L29.0,115.7 L29.7,116.5 L30.4,117.8 L31.1,119.2 L31.8,120.5 L32.5,121.3 L33.2,121.3 L33.9,120.5 L34.6,119.0 L35.3,117.2 L36.0,115.4 L36.7,114.0 L37.4,113.6 L38.1,114.2 L38.8,115.8 L39.5,118.0 L40.2,120.4 L40.9,122.4 L41.6,123.4 L42.3,123.2 L43.0,121.7 L43.7,119.2 L44.4,116.3 L45.1,113.6 L45.8,111.8 L46.5,111.5 L47.2,112.6 L47.9,115.2 L48.6,118.5 L49.3,121.8 L50.0,124.4 L50.7,125.5 L51.4,124.9 L52.1,122.6 L52.8,119.1 L53.5,115.2 L54.2,111.9 L54.9,110.0 L55.6,109.9 L56.3,111.7 L57.0,115.1 L57.7,119.2 L58.4,123.1 L59.1,125.9 L59.8,126.8 L60.5,125.7 L61.2,122.7 L61.9,118.6 L62.6,114.3 L63.3,110.9 L64.0,109.1 L64.7,109.4 L65.4,111.8 L66.1,115.5 L66.8,119.9 L67.5,123.7 L68.2,126.2 L68.9,126.7 L69.6,125.2 L70.3,122.1 L71.0,118.0 L71.7,114.0 L72.4,111.0 L73.1,109.8 L73.8,110.4 L74.5,112.8 L75.2,116.3 L75.9,120.2 L76.6,123.3 L77.3,125.2 L78.0,125.3 L78.7,123.7 L79.4,120.9 L80.1,117.5 L80.8,114.4 L81.5,112.3 L82.2,111.5 L82.9,112.3 L83.6,114.4 L84.3,117.2 L85.0,120.0 L85.7,122.2 L86.4,123.3 L87.1,123.1 L87.8,121.8 L88.5,119.7 L89.2,117.3 L89.9,115.3 L90.6,114.0 L91.3,113.7 L92.0,114.4 L92.7,115.9 L93.4,117.7 L94.1,119.5 L94.8,120.8 L95.5,121.3 L96.2,121.0 L96.9,120.1 L97.6,118.8 L98.3,117.4 L99.0,116.3 L99.7,115.7 L100.4,115.6 L101.1,116.1 L101.8,117.0 L102.5,118.0 L103.2,118.9 L103.9,119.5 L104.6,119.7 L105.3,119.5 L106.0,119.0 L106.7,118.3 L107.4,117.6 L108.1,117.1 L108.8,116.8 L109.5,116.9 L110.2,117.2 L110.9,117.6 L111.6,118.1 L112.3,118.5 L113.0,118.7 L113.7,118.8 L114.4,118.6 L115.1,118.4 L115.8,118.1 L116.5,117.8 L117.2,117.6 L117.9,117.5 L118.6,117.6 L119.3,117.7 L120.0,117.9" fill="none" stroke="#ce7131" stroke-width="2"/>
+          <rect x="150" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="150,98 160,98 196,68 186,68" fill="#F4F7F4"/><rect x="160" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="160,98 170,98 206,68 196,68" fill="#DCE6DF"/><rect x="170" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="170,98 180,98 216,68 206,68" fill="#F4F7F4"/><rect x="180" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="180,98 190,98 226,68 216,68" fill="#DCE6DF"/><rect x="190" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="190,98 200,98 236,68 226,68" fill="#F4F7F4"/><rect x="200" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="200,98 210,98 246,68 236,68" fill="#DCE6DF"/><rect x="210" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="210,98 220,98 256,68 246,68" fill="#F4F7F4"/><rect x="220" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="220,98 230,98 266,68 256,68" fill="#DCE6DF"/><rect x="230" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="230,98 240,98 276,68 266,68" fill="#F4F7F4"/><rect x="240" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="240,98 250,98 286,68 276,68" fill="#DCE6DF"/><rect x="250" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="250,98 260,98 296,68 286,68" fill="#F4F7F4"/><rect x="260" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="260,98 270,98 306,68 296,68" fill="#DCE6DF"/><rect x="270" y="98" width="10" height="70" fill="#E9EEEA"/><polygon points="270,98 280,98 316,68 306,68" fill="#F4F7F4"/><rect x="280" y="98" width="10" height="70" fill="#C9D8CE"/><polygon points="280,98 290,98 326,68 316,68" fill="#DCE6DF"/><polygon points="290,98 326,68 326,138 290,168" fill="#AFC3B6"/><polygon points="150,98 186,68 326,68 326,138 290,168 150,168" fill="none" stroke="#0F1713" stroke-width="1.3" stroke-linejoin="round"/><polyline points="150,168 150,98 290,98 290,168" fill="none" stroke="#0F1713" stroke-width="1" opacity=".6"/>
+          <circle cx="238.0" cy="118.0" r="9" fill="#318ece" opacity=".25" filter="url(#pGlow)"/>
+          <circle cx="238.0" cy="118.0" r="3.5" fill="#318ece"/>
+          <path d="M250.0,178.0 L250.9,177.9 L251.8,177.7 L252.7,177.6 L253.6,177.5 L254.4,177.5 L255.3,177.5 L256.2,177.6 L257.1,177.8 L258.0,178.0 L258.9,178.3 L259.8,178.5 L260.6,178.7 L261.5,178.9 L262.4,178.9 L263.3,178.8 L264.2,178.6 L265.1,178.3 L266.0,177.9 L266.9,177.4 L267.8,177.0 L268.6,176.7 L269.5,176.5 L270.4,176.4 L271.3,176.6 L272.2,177.0 L273.1,177.6 L274.0,178.3 L274.9,179.0 L275.7,179.7 L276.6,180.2 L277.5,180.5 L278.4,180.5 L279.3,180.1 L280.2,179.4 L281.1,178.5 L281.9,177.4 L282.8,176.4 L283.7,175.4 L284.6,174.7 L285.5,174.3 L286.4,174.5 L287.3,175.1 L288.2,176.1 L289.1,177.5 L289.9,179.0 L290.8,180.5 L291.7,181.8 L292.6,182.7 L293.5,183.0 L294.4,182.7 L295.3,181.8 L296.1,180.3 L297.0,178.5 L297.9,176.5 L298.8,174.6 L299.7,173.0 L300.6,172.0 L301.5,171.7 L302.4,172.2 L303.2,173.5 L304.1,175.4 L305.0,177.7 L305.9,180.1 L306.8,182.4 L307.7,184.1 L308.6,185.1 L309.5,185.3 L310.4,184.5 L311.2,182.9 L312.1,180.6 L313.0,178.0 L313.9,175.3 L314.8,172.9 L315.7,171.1 L316.6,170.2 L317.4,170.2 L318.3,171.2 L319.2,173.1 L320.1,175.6 L321.0,178.4 L321.9,181.1 L322.8,183.5 L323.7,185.1 L324.6,185.9 L325.4,185.7 L326.3,184.5 L327.2,182.5 L328.1,180.0 L329.0,177.3 L329.9,174.7 L330.8,172.6 L331.6,171.2 L332.5,170.6 L333.4,171.0 L334.3,172.3 L335.2,174.2 L336.1,176.5 L337.0,179.0 L337.9,181.2 L338.8,182.9 L339.6,184.0 L340.5,184.3 L341.4,183.8 L342.3,182.6 L343.2,180.9 L344.1,179.0 L345.0,177.0 L345.9,175.2 L346.7,173.9 L347.6,173.1 L348.5,173.0 L349.4,173.5 L350.3,174.5 L351.2,175.9 L352.1,177.5 L352.9,179.0 L353.8,180.3 L354.7,181.2 L355.6,181.7 L356.5,181.7 L357.4,181.2 L358.3,180.4 L359.2,179.4 L360.1,178.2 L360.9,177.2 L361.8,176.3 L362.7,175.7 L363.6,175.5 L364.5,175.5 L365.4,175.9 L366.3,176.5 L367.1,177.2 L368.0,177.9 L368.9,178.6 L369.8,179.1 L370.7,179.5 L371.6,179.6 L372.5,179.5 L373.4,179.3 L374.2,178.9 L375.1,178.4 L376.0,178.0 L376.9,177.6 L377.8,177.3 L378.7,177.1 L379.6,177.1 L380.5,177.1 L381.4,177.3 L382.2,177.5 L383.1,177.8 L384.0,178.0 L384.9,178.3 L385.8,178.4 L386.7,178.5 L387.6,178.5 L388.4,178.5 L389.3,178.4 L390.2,178.2 L391.1,178.1 L392.0,178.0" fill="none" stroke="#318ece" stroke-width="5" opacity=".25" filter="url(#pGlow)"/>
+          <path d="M250.0,178.0 L250.9,177.9 L251.8,177.7 L252.7,177.6 L253.6,177.5 L254.4,177.5 L255.3,177.5 L256.2,177.6 L257.1,177.8 L258.0,178.0 L258.9,178.3 L259.8,178.5 L260.6,178.7 L261.5,178.9 L262.4,178.9 L263.3,178.8 L264.2,178.6 L265.1,178.3 L266.0,177.9 L266.9,177.4 L267.8,177.0 L268.6,176.7 L269.5,176.5 L270.4,176.4 L271.3,176.6 L272.2,177.0 L273.1,177.6 L274.0,178.3 L274.9,179.0 L275.7,179.7 L276.6,180.2 L277.5,180.5 L278.4,180.5 L279.3,180.1 L280.2,179.4 L281.1,178.5 L281.9,177.4 L282.8,176.4 L283.7,175.4 L284.6,174.7 L285.5,174.3 L286.4,174.5 L287.3,175.1 L288.2,176.1 L289.1,177.5 L289.9,179.0 L290.8,180.5 L291.7,181.8 L292.6,182.7 L293.5,183.0 L294.4,182.7 L295.3,181.8 L296.1,180.3 L297.0,178.5 L297.9,176.5 L298.8,174.6 L299.7,173.0 L300.6,172.0 L301.5,171.7 L302.4,172.2 L303.2,173.5 L304.1,175.4 L305.0,177.7 L305.9,180.1 L306.8,182.4 L307.7,184.1 L308.6,185.1 L309.5,185.3 L310.4,184.5 L311.2,182.9 L312.1,180.6 L313.0,178.0 L313.9,175.3 L314.8,172.9 L315.7,171.1 L316.6,170.2 L317.4,170.2 L318.3,171.2 L319.2,173.1 L320.1,175.6 L321.0,178.4 L321.9,181.1 L322.8,183.5 L323.7,185.1 L324.6,185.9 L325.4,185.7 L326.3,184.5 L327.2,182.5 L328.1,180.0 L329.0,177.3 L329.9,174.7 L330.8,172.6 L331.6,171.2 L332.5,170.6 L333.4,171.0 L334.3,172.3 L335.2,174.2 L336.1,176.5 L337.0,179.0 L337.9,181.2 L338.8,182.9 L339.6,184.0 L340.5,184.3 L341.4,183.8 L342.3,182.6 L343.2,180.9 L344.1,179.0 L345.0,177.0 L345.9,175.2 L346.7,173.9 L347.6,173.1 L348.5,173.0 L349.4,173.5 L350.3,174.5 L351.2,175.9 L352.1,177.5 L352.9,179.0 L353.8,180.3 L354.7,181.2 L355.6,181.7 L356.5,181.7 L357.4,181.2 L358.3,180.4 L359.2,179.4 L360.1,178.2 L360.9,177.2 L361.8,176.3 L362.7,175.7 L363.6,175.5 L364.5,175.5 L365.4,175.9 L366.3,176.5 L367.1,177.2 L368.0,177.9 L368.9,178.6 L369.8,179.1 L370.7,179.5 L371.6,179.6 L372.5,179.5 L373.4,179.3 L374.2,178.9 L375.1,178.4 L376.0,178.0 L376.9,177.6 L377.8,177.3 L378.7,177.1 L379.6,177.1 L380.5,177.1 L381.4,177.3 L382.2,177.5 L383.1,177.8 L384.0,178.0 L384.9,178.3 L385.8,178.4 L386.7,178.5 L387.6,178.5 L388.4,178.5 L389.3,178.4 L390.2,178.2 L391.1,178.1 L392.0,178.0" fill="none" stroke="#318ece" stroke-width="2"/>
+          <path d="M8.0,178.0 L8.9,178.1 L9.8,178.2 L10.7,178.3 L11.6,178.4 L12.4,178.5 L13.3,178.6 L14.2,178.6 L15.1,178.5 L16.0,178.5 L16.9,178.3 L17.8,178.2 L18.6,178.0 L19.5,177.7 L20.4,177.5 L21.3,177.2 L22.2,177.0 L23.1,176.9 L24.0,176.8 L24.9,176.8 L25.8,176.9 L26.6,177.1 L27.5,177.3 L28.4,177.7 L29.3,178.2 L30.2,178.6 L31.1,179.1 L32.0,179.6 L32.9,180.0 L33.7,180.2 L34.6,180.3 L35.5,180.3 L36.4,180.1 L37.3,179.7 L38.2,179.1 L39.1,178.4 L40.0,177.6 L40.8,176.7 L41.7,175.9 L42.6,175.2 L43.5,174.6 L44.4,174.2 L45.3,174.1 L46.2,174.3 L47.0,174.7 L47.9,175.5 L48.8,176.4 L49.7,177.6 L50.6,178.9 L51.5,180.2 L52.4,181.4 L53.3,182.4 L54.1,183.2 L55.0,183.6 L55.9,183.6 L56.8,183.3 L57.7,182.5 L58.6,181.3 L59.5,179.9 L60.4,178.3 L61.2,176.5 L62.1,174.8 L63.0,173.3 L63.9,172.1 L64.8,171.2 L65.7,170.8 L66.6,171.0 L67.5,171.6 L68.3,172.7 L69.2,174.2 L70.1,176.0 L71.0,178.0 L71.9,180.1 L72.8,182.0 L73.7,183.6 L74.6,184.9 L75.5,185.7 L76.3,186.0 L77.2,185.6 L78.1,184.8 L79.0,183.4 L79.9,181.7 L80.8,179.7 L81.7,177.6 L82.5,175.5 L83.4,173.7 L84.3,172.1 L85.2,171.0 L86.1,170.4 L87.0,170.3 L87.9,170.8 L88.8,171.8 L89.7,173.2 L90.5,174.9 L91.4,176.8 L92.3,178.7 L93.2,180.5 L94.1,182.1 L95.0,183.3 L95.9,184.1 L96.8,184.5 L97.6,184.4 L98.5,183.9 L99.4,182.9 L100.3,181.7 L101.2,180.3 L102.1,178.7 L103.0,177.2 L103.8,175.9 L104.7,174.7 L105.6,173.9 L106.5,173.3 L107.4,173.2 L108.3,173.4 L109.2,173.9 L110.1,174.6 L111.0,175.6 L111.8,176.6 L112.7,177.7 L113.6,178.7 L114.5,179.6 L115.4,180.3 L116.3,180.8 L117.2,181.1 L118.0,181.1 L118.9,180.9 L119.8,180.5 L120.7,180.0 L121.6,179.4 L122.5,178.7 L123.4,178.1 L124.3,177.5 L125.2,177.0 L126.0,176.6 L126.9,176.4 L127.8,176.2 L128.7,176.3 L129.6,176.4 L130.5,176.7 L131.4,177.0 L132.2,177.3 L133.1,177.7 L134.0,178.0 L134.9,178.3 L135.8,178.6 L136.7,178.7 L137.6,178.8 L138.5,178.9 L139.3,178.8 L140.2,178.7 L141.1,178.6 L142.0,178.5 L142.9,178.3 L143.8,178.1 L144.7,178.0 L145.6,177.8 L146.4,177.7 L147.3,177.7 L148.2,177.6 L149.1,177.6 L150.0,177.6" fill="none" stroke="#318ece" stroke-width="5" opacity=".25" filter="url(#pGlow)"/>
+          <path d="M8.0,178.0 L8.9,178.1 L9.8,178.2 L10.7,178.3 L11.6,178.4 L12.4,178.5 L13.3,178.6 L14.2,178.6 L15.1,178.5 L16.0,178.5 L16.9,178.3 L17.8,178.2 L18.6,178.0 L19.5,177.7 L20.4,177.5 L21.3,177.2 L22.2,177.0 L23.1,176.9 L24.0,176.8 L24.9,176.8 L25.8,176.9 L26.6,177.1 L27.5,177.3 L28.4,177.7 L29.3,178.2 L30.2,178.6 L31.1,179.1 L32.0,179.6 L32.9,180.0 L33.7,180.2 L34.6,180.3 L35.5,180.3 L36.4,180.1 L37.3,179.7 L38.2,179.1 L39.1,178.4 L40.0,177.6 L40.8,176.7 L41.7,175.9 L42.6,175.2 L43.5,174.6 L44.4,174.2 L45.3,174.1 L46.2,174.3 L47.0,174.7 L47.9,175.5 L48.8,176.4 L49.7,177.6 L50.6,178.9 L51.5,180.2 L52.4,181.4 L53.3,182.4 L54.1,183.2 L55.0,183.6 L55.9,183.6 L56.8,183.3 L57.7,182.5 L58.6,181.3 L59.5,179.9 L60.4,178.3 L61.2,176.5 L62.1,174.8 L63.0,173.3 L63.9,172.1 L64.8,171.2 L65.7,170.8 L66.6,171.0 L67.5,171.6 L68.3,172.7 L69.2,174.2 L70.1,176.0 L71.0,178.0 L71.9,180.1 L72.8,182.0 L73.7,183.6 L74.6,184.9 L75.5,185.7 L76.3,186.0 L77.2,185.6 L78.1,184.8 L79.0,183.4 L79.9,181.7 L80.8,179.7 L81.7,177.6 L82.5,175.5 L83.4,173.7 L84.3,172.1 L85.2,171.0 L86.1,170.4 L87.0,170.3 L87.9,170.8 L88.8,171.8 L89.7,173.2 L90.5,174.9 L91.4,176.8 L92.3,178.7 L93.2,180.5 L94.1,182.1 L95.0,183.3 L95.9,184.1 L96.8,184.5 L97.6,184.4 L98.5,183.9 L99.4,182.9 L100.3,181.7 L101.2,180.3 L102.1,178.7 L103.0,177.2 L103.8,175.9 L104.7,174.7 L105.6,173.9 L106.5,173.3 L107.4,173.2 L108.3,173.4 L109.2,173.9 L110.1,174.6 L111.0,175.6 L111.8,176.6 L112.7,177.7 L113.6,178.7 L114.5,179.6 L115.4,180.3 L116.3,180.8 L117.2,181.1 L118.0,181.1 L118.9,180.9 L119.8,180.5 L120.7,180.0 L121.6,179.4 L122.5,178.7 L123.4,178.1 L124.3,177.5 L125.2,177.0 L126.0,176.6 L126.9,176.4 L127.8,176.2 L128.7,176.3 L129.6,176.4 L130.5,176.7 L131.4,177.0 L132.2,177.3 L133.1,177.7 L134.0,178.0 L134.9,178.3 L135.8,178.6 L136.7,178.7 L137.6,178.8 L138.5,178.9 L139.3,178.8 L140.2,178.7 L141.1,178.6 L142.0,178.5 L142.9,178.3 L143.8,178.1 L144.7,178.0 L145.6,177.8 L146.4,177.7 L147.3,177.7 L148.2,177.6 L149.1,177.6 L150.0,177.6" fill="none" stroke="#318ece" stroke-width="2"/>
+          <g font-family="JetBrains Mono, monospace" font-size="11.5" letter-spacing=".4">
+            <text x="10" y="100" fill="#ce7131">pump &#183; 800 nm &#8594;</text>
+            <text x="10" y="206" fill="#318ece">&#8592; idler &#183; 1868 nm</text>
+            <text x="390" y="206" text-anchor="end" fill="#318ece">signal &#183; 1400 nm &#8594;</text>
+            <text x="200" y="244" text-anchor="middle" fill="#6C7871">one photon pair, two directions</text>
+          </g>
+        </svg></div>
+          <figcaption>Illustration based on Kuo et al., Optica Quantum 2023</figcaption>
+        </figure>
+        <span class="k">Quantum photonics</span>
+        <h3>Photon pairs born running in opposite directions</h3>
+        <p>The first first-order backward photon-pair source, and the first frequency translation using it.</p>
+        <ul class="papers" aria-label="Key papers">
+          <li><a href="https://doi.org/10.1364/OPTICAQ.500021">Kuo et al., Optica Quantum 1, 43 (2023)</a></li>
+        </ul>
+      </article>
+      <article class="hl">
+        <figure class="hl-fig">
+          <div class="hl-img"><img src="assets/hl-ions.webp" width="365" height="395" alt="Ion-mass map showing potassium in red and rubidium in green below a sacrificial layer; scale bar 20 micrometres." loading="lazy"></div>
+          <figcaption>Lee et al., ACS Appl. Electron. Mater. 2025, Fig. 6(b) &middot; CC BY 4.0</figcaption>
+        </figure>
+        <span class="k">Ion and domain physics</span>
+        <h3>Mapping where the ions sit</h3>
+        <p>We map exactly where the exchanged rubidium ions sit inside KTP, and show how these engineered regions decide where, and how easily, the crystal can switch.</p>
+        <ul class="papers" aria-label="Key papers">
+          <li><a href="https://doi.org/10.1021/acsaelm.4c02264">Lee et al., ACS Appl. Electron. Mater. 7, 3679 (2025)</a></li><li><a href="https://doi.org/10.1063/5.0252023">Barrett et al., APL Mater. 13, 031110 (2025)</a></li><li><a href="https://doi.org/10.1364/OE.513734">Barrett et al., Opt. Express 32, 14252 (2024)</a></li>
+        </ul>
+      </article>
+    </div>
+    <p class="all-pubs"><a href="https://scholar.google.com/citations?user=zOe40fgAAAAJ&amp;hl=en">All publications on Google Scholar &#8594;</a></p>
+  </div>
+</section>
+
+<!-- Final question -->
+<section class="band final">
+  <div class="in stack">
+    <p class="eyebrow">The question at the end</p>
+    <h2>Can quantum optical function become a <em>stored, reprogrammable</em> property of a material?</h2>
+    <p class="lede">That is the question behind everything we do. Each project in the group is a step toward being able to ask it seriously.</p>
+  </div>
+</section>
+
+<!-- How we work -->
+<section class="band" id="work">
+  <div class="in stack">
+    <p class="eyebrow">How we work</p>
+    <h2>Different minds. Shared curiosity. <em>One team.</em></h2>
+    <p class="lede">At ONDA, we believe that great science is a collective effort. We bring together people with different backgrounds, skills, and perspectives, working closely together to explore challenging scientific questions.</p>
+    <p class="body">At ONDA, we are more than a collection of individual researchers. We are a team. We share ideas, knowledge, and challenges, learn from one another, and celebrate achievements together. We strive to create an environment where everyone feels they belong, where contributions are valued, and where we support each other while encouraging everyone to take initiative, develop their own ideas, and grow as independent scientists.</p>
+    <p class="body">Inclusiveness, gender equality, and mutual respect are fundamental to our research culture. We are committed to creating an environment where everyone feels welcome, is heard, and has equal opportunities to contribute and grow.</p>
+    <p class="body">We value curiosity, creativity, open discussions, and the freedom to explore unexpected directions. We believe that the most interesting discoveries often happen at the boundaries between disciplines, and that learning from both successes and failures is an essential part of doing science.</p>
+  </div>
+</section>
+
+<!-- Meet ONDA -->
+<section class="band" id="team">
+  <div class="in">
+    <p class="eyebrow">Meet ONDA</p>
+    <h2>The people behind the <em>science</em></h2>
+    <div class="stack" style="margin-top:28px;gap:20px">
+      <p class="lede">ONDA brings together researchers and students with diverse backgrounds and expertise, united by a shared curiosity about light and matter.</p>
+      <p class="body">From materials engineering and experimental physics to nonlinear and quantum optics, each of us brings a different perspective to the questions we explore together.</p>
+      <p class="body">Our research is shaped by the people who make it happen.</p>
+      <p class="all-pubs" style="margin-top:8px"><a href="#team-list">Meet the team &#8595;</a></p>
+    </div>
+
+    <div class="tiers" id="team-list">
+      <div class="tier">
+        <div class="tier-head"><span class="k">Group leader</span><p>Research vision &amp; leadership</p></div>
+        <div class="people">
+          <article class="person">
+            <h3>Carlota Canalias</h3>
+            <p class="role">Professor, Department of Applied Physics, KTH</p>
+            <a class="more" href="https://www.kth.se/profile/ccg">KTH profile &#8594;</a>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-head"><span class="k">PhD students</span><p>Research &amp; scientific exploration</p></div>
+        <div class="people">
+          <article class="person">
+            <h3>Astrid Bergman</h3>
+            <p class="role">PhD student</p>
+            <p>Fabrication of reconfigurable squeezers</p>
+          </article>
+          <article class="person">
+            <h3>Yan Machado</h3>
+            <p class="role">Industrial PhD student with <a href="https://nyfors.com">NYFORS Teknologi</a></p>
+            <p>Direct fiber-coupled KTP waveguides for quantum optical applications</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-head"><span class="k">Close collaborators</span></div>
+        <div class="people">
+          <article class="person">
+            <h3>Vaishali Adya</h3>
+            <p class="role">Assistant Professor, KTH &middot; <a href="https://www.kth.se/en/2.82511/bon/research/squics">SQuiCS group</a></p>
+            <p>Squeezed light generation</p>
+          </article>
+          <article class="person">
+            <h3>Ulrich Vogt</h3>
+            <p class="role">Professor, KTH &middot; <a href="https://www.kth.se/profile/uvogt">KTH profile</a></p>
+            <p>AI-enhanced nanofabrication</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Join -->
+<section class="band join" id="join">
+  <div class="in">
+    <p class="eyebrow">Join us</p>
+    <h2>Come and help us <em>rewrite</em> the crystal</h2>
+
+    <div class="join-block">
+      <div class="join-head">
+        <span class="status open">Rolling</span>
+        <h3>Student projects</h3>
+        <p>Master&rsquo;s theses, internships and project courses at KTH AlbaNova. Each project is part of our ongoing research and can be adapted to your background and interests.</p>
+      </div>
+      <div class="ads">
+      <article class="ad">
+        <span class="k">Automation &middot; AI-assisted development &middot; Materials</span>
+        <h3>Programmable materials for quantum light</h3>
+        <p class="ad-sub">AI-assisted experimental automation and quantum photonics</p>
+        <p><strong>Goal:</strong> Develop an automated, computer-controlled experimental setup for precise, reproducible and programmable modification of material composition in nonlinear optical crystals, paving the way towards new quantum light sources.</p>
+        <details>
+          <summary>Read the full project description</summary>
+          <div class="ad-body">
+            <p><strong>What if we could program the properties of a crystal to control the light it produces?</strong></p><p>At ONDA, we engineer materials to create, manipulate and control light in new ways. Our research connects material design with quantum photonics, including sources of entangled photons and squeezed light.</p><p>A key part of this work is controlling the composition of potassium titanyl phosphate (KTP), a nonlinear optical crystal. By introducing selected ions into the crystal, we can modify how it guides light and how its ferroelectric domains can be engineered. Our ambition is to move towards programmable material engineering, where processing conditions are defined digitally, executed automatically and monitored in real time.</p><h4>The project</h4><p>You will develop a computer-controlled experimental platform that helps us test a large matrix of material compositions to find those best suited for programmability. The system will combine electrical measurements, temperature control and real-time monitoring to enable precise and reproducible material processing. You will use AI-assisted development tools to design and implement instrument control, automated experimental sequences and live data visualisation. Working closely with ONDA researchers and PhD students, you will help demonstrate how programmable processing can be used to engineer material properties for future photonic devices.</p><h4>Description of the work</h4><ul><li>Explore programmable material processing and AI-assisted laboratory automation.</li><li>Design and develop automated experimental control using AI-assisted tools.</li><li>Integrate instruments, real-time monitoring and safety systems.</li><li>Perform initial experiments and characterise the modified crystals.</li></ul><h4>Who can apply?</h4><p>The project is suitable for a master&rsquo;s thesis, internship or project course in physics, engineering or related fields. No specific programming language is required. An interest in AI-assisted development, experimental technology and hands-on problem-solving is particularly welcome.</p>
+            <p class="ad-meta">KTH AlbaNova, Department of Applied Physics, Stockholm &middot; Supervisor: Prof. Carlota Canalias &middot; <a href="mailto:ccg@kth.se">ccg@kth.se</a></p>
+          </div>
+        </details>
+      </article>
+      <article class="ad">
+        <span class="k">Hardware &middot; Python &amp; AI &middot; Nanofabrication</span>
+        <h3>AI-driven, affordable and automated nanoimprint lithography for quantum photonics</h3>
+        
+        <p><strong>Goal:</strong> Develop a low-cost, automated nanoimprint system, guided by AI, for fabrication of quantum devices.</p>
+        <details>
+          <summary>Read the full project description</summary>
+          <div class="ad-body">
+            <p>Periodic structures with sub-&micro;m periods in nonlinear optical crystals are key to the next generation of quantum light sources. Examples are counter-propagating entangled photon pairs and mirrorless optical parametric oscillators. Making these structures today needs expensive lithography tools that are poorly suited to small crystals. Nanoimprint lithography copies a nanoscale pattern from a stamp in seconds, at a fraction of the cost. Commercial imprint tools, however, are expensive and not designed for small crystals that must be aligned precisely. We want to build our own imprint system: affordable, fully automated, and using machine vision and AI to align the stamp to the crystal and to optimise the imprint process.</p><p>This project combines hardware, software and nanofabrication. You will be part of a research team and participate in a larger research project. Your task will be to help build and automate an imprint station that presses a nanostructured stamp into a thin resist layer on the crystal and cures it with UV light. The station will control force and UV exposure precisely, and use a camera to align the grating to the crystal edge to within a few hundredths of a degree. You will:</p><ul><li>program motorized stages, a force sensor and a UV source in Python;</li><li>develop camera-based alignment with image analysis;</li><li>use AI and data-driven methods, such as Bayesian optimisation, to find the best imprint conditions with as few experiments as possible.</li></ul><p>The results will be used to develop the next generation of entangled photon sources for quantum technologies.</p><h4>Description of the work</h4><ul><li>Literature study of nanoimprint lithography and low-cost and open-hardware imprint systems</li><li>Design and assembly of the imprint station (mechanics, UV exposure, force control)</li><li>Programming of instrument control, automated measurement sequences and data logging in Python</li><li>Camera-based alignment and image analysis</li><li>AI-assisted optimisation of imprint parameters (force, UV dose, resist thickness)</li><li>Experimental imprinting of sub-&micro;m gratings on KTP crystals and characterization (SEM, AFM)</li></ul><h4>Who can apply?</h4><p>The project is suitable for an internship and/or project course as well as for a master&rsquo;s degree. It can be adapted towards hardware and automation, software and AI, or nanofabrication, depending on your interests. Experience with Python, electronics or cleanroom work is a plus but not required.</p>
+            <p class="ad-meta">KTH AlbaNova, Department of Applied Physics, Stockholm &middot; Supervisor: Prof. Carlota Canalias &middot; <a href="mailto:ccg@kth.se">ccg@kth.se</a></p>
+          </div>
+        </details>
+      </article>
+      <article class="ad">
+        <span class="k">Laser writing &middot; Etching &middot; Modelling</span>
+        <h3>Micro- and nanofabrication with laser-assisted selective etching</h3>
+        
+        <p><strong>Goal:</strong> Development of laser-assisted fabrication techniques for quantum devices in crystals.</p>
+        <details>
+          <summary>Read the full project description</summary>
+          <div class="ad-body">
+            <p>Ridge nanowaveguides in nonlinear optical crystals are of utmost importance for quantum technologies, especially those requiring entangled photon pairs. Here, we want to develop a novel method that combines laser-assisted writing and etching to create such waveguides.</p><p>This project deals with modifying material properties by laser writing. You will be part of a research team and participate in a larger research project. Your task will be to characterize how the energy dose delivered by the laser influences material properties. The project includes characterization of the laser dose, programming a translation stage, and analysis of how the dose changes the crystallographic structure of the starting material. You will be working closely with a group of PhD students and researchers. The results of this project will be used to develop the next generation of entangled photon sources for quantum technologies.</p><h4>Description of the work</h4><ul><li>Literature study</li><li>Experimental work evaluating different laser dose parameters, writing speed, etching conditions, etc.</li><li>Simulation and modelling of the process</li></ul><h4>Who can apply?</h4><p>The project is suitable for an internship and/or project course as well as for a master&rsquo;s degree.</p>
+            <p class="ad-meta">KTH AlbaNova, Department of Applied Physics, Stockholm &middot; Supervisor: Prof. Carlota Canalias &middot; <a href="mailto:ccg@kth.se">ccg@kth.se</a></p>
+          </div>
+        </details>
+      </article>
+      </div>
+    </div>
+
+    <div class="cols2 join-more">
+      <div class="item">
+        <span class="status">No openings</span>
+        <h3>PhD positions</h3>
+        <p>There are no open PhD positions at the moment. New positions are announced on <a href="https://www.kth.se/lediga-jobb?l=en">KTH&rsquo;s job page</a>.</p>
+      </div>
+      <div class="item">
+        <span class="status">Open to enquiries</span>
+        <h3>Postdocs and researchers</h3>
+        <p>Bring your own fellowship idea and let&rsquo;s develop it together.</p>
+      </div>
+    </div>
+
+    <div class="contact">
+      <p>Interested in a project, or in working with us? Send a short note about who you are and which part of our research caught your attention. A CV helps but is not required for a first conversation.</p>
+      <p class="addr">ONDA &middot; <a href="https://www.aphys.kth.se">Department of Applied Physics</a><br>KTH Royal Institute of Technology<br>AlbaNova University Center, Stockholm<br><a href="mailto:ccg@kth.se">ccg@kth.se</a></p>
+    </div>
+  </div>
+</section>
+
+<footer class="band">
+  <div class="in foot">
+    <span class="foot-left"><a class="kth" href="https://www.kth.se" aria-label="KTH Royal Institute of Technology"><img src="assets/kth-logo.png" width="214" height="240" alt="KTH Royal Institute of Technology"></a><span>ONDA &middot; Optical Nonlinear Devices and Architectures<br><a href="https://www.aphys.kth.se">Department of Applied Physics</a> &middot; KTH &middot; Stockholm</span></span>
+    <span>Research on KTP: materials, nonlinear optics, quantum photonics</span>
+  </div>
+</footer>
+
+</body>
+</html>
